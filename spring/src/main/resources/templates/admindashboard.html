@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+
+    <h2>📊 Dashboard Analytics</h2>
+
+    <!-- CARDS -->
+    <div class="row">
+        <div class="col">💰 <span th:text="${totalDons}"></span></div>
+        <div class="col">❤️ <span th:text="${totalActions}"></span></div>
+        <div class="col">🏢 <span th:text="${totalOrganisationsValides}"></span></div>
+        <div class="col">🤝 <span th:text="${totalParticipations}"></span></div>
+    </div>
+
+    <hr/>
+
+    <!-- GRAPH -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    </section>
+</div>
+
+<!-- SCRIPT CHART -->
+<script th:inline="javascript">
+
+    let labels = /*[[${labels}]]*/ [];
+    let values = /*[[${values}]]*/ [];
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Statistiques',
+                data: values,
+                backgroundColor: [
+                    'green',
+                    'blue',
+                    'orange',
+                    'red'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+</script>
+
+</body>
+</html>

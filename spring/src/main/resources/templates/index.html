@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+        <div class="row align-items-center g-4 py-2">
+            <div class="col-lg-6">
+                <span class="badge text-bg-success rounded-pill mb-3">Solidarite • Humanite • Impact</span>
+                <h1 class="display-5 fw-bold">Ensemble, finançons des campagnes qui changent des vies.</h1>
+                <p class="lead text-secondary mt-3">
+                    Une plateforme de dons moderne pour connecter donateurs, organisations et actions humanitaires.
+                </p>
+                <div class="d-flex gap-2 flex-wrap mt-4">
+                    <a href="/actions" class="btn btn-success btn-pill">Faire un don</a>
+                    <a href="/actions/form" class="btn btn-outline-success btn-pill">Créer une campagne</a>
+                    <a href="/register" class="btn btn-outline-dark btn-pill" th:if="${session.currentUser == null}">S'inscrire</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img class="img-fluid rounded-xl shadow-sm"
+                     src="https://images.unsplash.com/photo-1469571486292-b53601020c0b?auto=format&fit=crop&w=1200&q=80"
+                     alt="Solidarite humaine">
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h3 class="mb-0">Campagnes en vedette</h3>
+            <a href="/actions" class="btn btn-sm btn-outline-success btn-pill">Voir toutes les campagnes</a>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-4" th:each="a : ${featuredCampaigns}">
+                <div class="card border-0 shadow-sm h-100 hover-lift">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80"
+                         class="card-img-top" alt="Campagne">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${a.titre}">Titre campagne</h5>
+                        <p class="card-text text-secondary" th:text="${a.description}">Description</p>
+                        <p class="small mb-1">Objectif: <strong th:text="${#numbers.formatDecimal(a.objectifMontant, 1, 0)}"></strong> DH</p>
+                        <p class="small">Collecte: <strong th:text="${#numbers.formatDecimal(a.montantCollecte, 1, 0)}"></strong> DH</p>
+                        <a class="btn btn-success btn-sm btn-pill" th:href="@{'/actions/' + ${a.id}}">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" th:if="${#lists.isEmpty(featuredCampaigns)}">
+                <div class="alert alert-light border">Aucune campagne disponible pour le moment.</div>
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <h3 class="mb-3">Catégories populaires</h3>
+        <div class="row g-3 text-center">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 rounded-xl bg-light border hover-lift"><i class="fa-solid fa-heart-pulse text-success fa-2x mb-2"></i><div>Sante</div></div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 rounded-xl bg-light border hover-lift"><i class="fa-solid fa-graduation-cap text-success fa-2x mb-2"></i><div>Education</div></div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 rounded-xl bg-light border hover-lift"><i class="fa-solid fa-utensils text-success fa-2x mb-2"></i><div>Nourriture</div></div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 rounded-xl bg-light border hover-lift"><i class="fa-solid fa-children text-success fa-2x mb-2"></i><div>Orphelins</div></div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 rounded-xl bg-light border hover-lift"><i class="fa-solid fa-moon text-success fa-2x mb-2"></i><div>Ramadan / Zakat</div></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

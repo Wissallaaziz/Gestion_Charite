@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h2 class="mb-0">Catégories humanitaires</h2>
+            <a href="/actions" class="btn btn-outline-success btn-pill">Explorer les campagnes</a>
+        </div>
+
+        <div class="row g-3 text-center">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-4 rounded-xl border bg-light hover-lift">
+                    <i class="fa-solid fa-heart-pulse text-success fa-2x mb-3"></i>
+                    <h6>Santé</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-4 rounded-xl border bg-light hover-lift">
+                    <i class="fa-solid fa-graduation-cap text-success fa-2x mb-3"></i>
+                    <h6>Éducation</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-4 rounded-xl border bg-light hover-lift">
+                    <i class="fa-solid fa-utensils text-success fa-2x mb-3"></i>
+                    <h6>Nourriture</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-4 rounded-xl border bg-light hover-lift">
+                    <i class="fa-solid fa-children text-success fa-2x mb-3"></i>
+                    <h6>Orphelins</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-4 rounded-xl border bg-light hover-lift">
+                    <i class="fa-solid fa-moon text-success fa-2x mb-3"></i>
+                    <h6>Ramadan / Zakat</h6>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

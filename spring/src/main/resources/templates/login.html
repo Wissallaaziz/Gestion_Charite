@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <h2 class="mb-3">Connexion donateur</h2>
+                <p class="text-muted">Accedez a votre espace et suivez vos contributions.</p>
+
+                <div class="alert alert-success" th:if="${param.registered}">
+                    Compte cree avec succes. Vous pouvez vous connecter.
+                </div>
+                <div class="alert alert-info" th:if="${param.logout}">
+                    Vous etes deconnecte.
+                </div>
+                <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+                <form method="post" action="/login" class="mt-4 p-3 border rounded-xl bg-light">
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email"
+                               class="form-control rounded-xl"
+                               name="email"
+                               th:value="${email}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password"
+                               class="form-control rounded-xl"
+                               name="motDePasse"
+                               required>
+                    </div>
+                    <button class="btn btn-success btn-pill w-100">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Se connecter
+                    </button>
+                </form>
+
+                <p class="mt-3 mb-0 text-center">
+                    Pas encore de compte ?
+                    <a href="/register">Creer un compte</a>
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

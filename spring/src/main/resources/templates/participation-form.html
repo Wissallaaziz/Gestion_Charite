@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+
+    <div class="p-4 border rounded-xl bg-light">
+        <h3>Participer à la campagne</h3>
+        <p class="text-secondary">Confirmez votre participation en tant que bénévole.</p>
+
+        <form th:action="@{/participation/save}" method="post">
+
+            <input type="hidden" name="actionId" th:value="${actionId}"/>
+
+            <button class="btn btn-success btn-pill">
+                Confirmer participation
+            </button>
+
+        </form>
+
+    </div>
+
+    </section>
+</div>
+
+</body>
+</html>

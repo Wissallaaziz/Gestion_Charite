@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Campaign Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-sans bg-[#f8fafc] text-slate-900">
+<div class="min-h-screen flex">
+    <aside class="w-[290px] bg-[#0f172a] text-slate-200 flex flex-col px-6 py-8">
+        <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Command Center</p>
+            <h1 class="mt-2 text-2xl font-bold text-white">Admin Panel</h1>
+            <span class="inline-flex mt-5 items-center rounded-full bg-sky-500/20 px-3 py-1 text-[11px] font-semibold tracking-wide text-sky-300">
+                PLATFORM ADMIN - LEVEL 4 CLEARANCE
+            </span>
+        </div>
+
+        <nav class="mt-10 space-y-2">
+            <a href="/dashboard" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i data-lucide="layout-dashboard" class="h-4 w-4"></i>
+                Overview
+            </a>
+            <a href="/dashboard" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i data-lucide="clock-3" class="h-4 w-4"></i>
+                Pending Approvals
+            </a>
+            <a href="/admin/global-campaigns" class="flex items-center gap-3 rounded-lg bg-sky-500/20 px-4 py-3 text-sm font-semibold text-sky-300 ring-1 ring-sky-300/30">
+                <i data-lucide="folder-kanban" class="h-4 w-4"></i>
+                Global Campaigns
+            </a>
+            <a href="/organisations" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i data-lucide="users" class="h-4 w-4"></i>
+                Manage Users
+            </a>
+        </nav>
+
+        <div class="mt-auto border-t border-slate-700/70 pt-6">
+            <p class="text-[11px] tracking-[0.16em] text-slate-400">ACTIVE SESSION</p>
+            <p class="mt-3 text-sm font-semibold text-white" th:text="${session.currentUser != null ? session.currentUser.nom : 'admin'}">admin</p>
+            <a href="/logout" class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose-300 hover:text-rose-200">
+                <i data-lucide="log-out" class="h-4 w-4"></i>
+                Secure Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 px-8 py-8 md:px-12 md:py-10">
+        <header class="mb-10 flex items-center justify-between">
+            <div class="w-32"></div>
+            <a href="/" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
+                <i data-lucide="globe" class="h-4 w-4"></i>
+                View Public Site
+            </a>
+            <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
+                    AD
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-semibold text-slate-900" th:text="${session.currentUser != null ? session.currentUser.nom : 'admin'}">admin</p>
+                    <p class="text-xs text-slate-500">Platform Administrator</p>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Global Campaign Directory</h2>
+            <p class="mt-2 text-sm text-slate-500">Master registry of all active charity actions across the platform</p>
+        </section>
+
+        <section class="mt-8 rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="border-b border-slate-200 bg-slate-50/70">
+                    <tr class="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Campaign Identity</th>
+                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4">Funding Progress</th>
+                        <th class="px-6 py-4">Audit</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/70">
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-700">#4</td>
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-900">test camp</td>
+                        <td class="px-6 py-5 text-xs font-semibold uppercase tracking-wide text-blue-600">Education</td>
+                        <td class="px-6 py-5">
+                            <div class="flex min-w-[250px] items-center gap-3">
+                                <div class="h-2.5 w-full rounded-full bg-slate-200">
+                                    <div class="h-2.5 w-[62%] rounded-full bg-teal-500"></div>
+                                </div>
+                                <span class="whitespace-nowrap text-xs font-semibold text-slate-600">31,000 MAD</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                                View Live
+                                <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50/70">
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-700">#2</td>
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-900">Nettoyage de la plage</td>
+                        <td class="px-6 py-5 text-xs font-semibold uppercase tracking-wide text-blue-600">Environnement</td>
+                        <td class="px-6 py-5">
+                            <div class="flex min-w-[250px] items-center gap-3">
+                                <div class="h-2.5 w-full rounded-full bg-slate-200">
+                                    <div class="h-2.5 w-[48%] rounded-full bg-teal-500"></div>
+                                </div>
+                                <span class="whitespace-nowrap text-xs font-semibold text-slate-600">18,400 MAD</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                                View Live
+                                <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50/70">
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-700">#7</td>
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-900">Winter Education Support</td>
+                        <td class="px-6 py-5 text-xs font-semibold uppercase tracking-wide text-blue-600">Education</td>
+                        <td class="px-6 py-5">
+                            <div class="flex min-w-[250px] items-center gap-3">
+                                <div class="h-2.5 w-full rounded-full bg-slate-200">
+                                    <div class="h-2.5 w-[81%] rounded-full bg-teal-500"></div>
+                                </div>
+                                <span class="whitespace-nowrap text-xs font-semibold text-slate-600">64,700 MAD</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                                View Live
+                                <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50/70">
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-700">#9</td>
+                        <td class="px-6 py-5 text-sm font-semibold text-slate-900">Green Streets Initiative</td>
+                        <td class="px-6 py-5 text-xs font-semibold uppercase tracking-wide text-blue-600">Environnement</td>
+                        <td class="px-6 py-5">
+                            <div class="flex min-w-[250px] items-center gap-3">
+                                <div class="h-2.5 w-full rounded-full bg-slate-200">
+                                    <div class="h-2.5 w-[34%] rounded-full bg-teal-500"></div>
+                                </div>
+                                <span class="whitespace-nowrap text-xs font-semibold text-slate-600">9,900 MAD</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                                View Live
+                                <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

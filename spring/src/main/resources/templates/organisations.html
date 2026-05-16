@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">Organisations partenaires</h2>
+        <a class="btn btn-outline-success btn-pill" href="/dashboard">Espace admin</a>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3" th:each="org : ${organisations}">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+
+                <div class="card-body">
+                    <h5 th:text="${org.nom}"></h5>
+                    <p class="text-secondary" th:text="${org.description}"></p>
+
+                    <p>
+                        Status :
+                        <span th:if="${org.valide}" class="badge text-bg-success">Validée</span>
+                        <span th:if="${!org.valide}" class="badge text-bg-warning">En attente</span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    </section>
+</div>
+
+</body>
+</html>

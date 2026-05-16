@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+
+    <div class="p-4 border rounded-xl bg-light">
+        <h3>Faire un don</h3>
+        <p class="text-secondary">Chaque contribution compte pour atteindre l'objectif de la campagne.</p>
+
+        <form th:action="@{/don/save}" method="post">
+
+            <input type="hidden" name="actionId" th:value="${actionId}"/>
+
+            <div class="mb-3">
+                <label class="form-label">Montant</label>
+                <input type="number" class="form-control rounded-xl" name="montant" min="10" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Méthode de paiement</label>
+                <select class="form-select rounded-xl" name="methodePaiement">
+                    <option value="Carte bancaire">Carte bancaire</option>
+                    <option value="Virement">Virement</option>
+                    <option value="PayPal">PayPal</option>
+                </select>
+            </div>
+
+            <button class="btn btn-success btn-pill">Donner maintenant</button>
+
+        </form>
+
+    </div>
+
+    </section>
+</div>
+
+</body>
+</html>

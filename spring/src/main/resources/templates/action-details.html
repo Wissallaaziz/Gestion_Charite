@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:replace="~{layout :: content(~{::section})}">
+    <section>
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <img class="img-fluid rounded-xl shadow-sm"
+                 src="https://images.unsplash.com/photo-1593113598332-cd59a93f7f70?auto=format&fit=crop&w=1200&q=80"
+                 alt="Campagne detail">
+        </div>
+        <div class="col-lg-5">
+            <div class="p-3 border rounded-xl bg-light">
+                <h2 th:text="${action.titre}"></h2>
+                <p class="text-secondary" th:text="${action.description}"></p>
+
+                <p class="mb-1">Organisation:
+                    <strong th:text="${action.organisation != null ? action.organisation.nom : 'Non renseignée'}"></strong>
+                </p>
+                <p class="mb-1">Catégorie:
+                    <strong th:text="${action.categorie != null ? action.categorie.nom : 'Non renseignée'}"></strong>
+                </p>
+                <p class="mb-1">Objectif:
+                    <strong th:text="${#numbers.formatDecimal(action.objectifMontant, 1, 0)}"></strong> DH
+                </p>
+                <p class="mb-2">Collecté:
+                    <strong th:text="${#numbers.formatDecimal(action.montantCollecte, 1, 0)}"></strong> DH
+                </p>
+
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success"
+                         th:style="'width:' + ${action.objectifMontant > 0 ? (action.montantCollecte * 100 / action.objectifMontant) : 0} + '%'"></div>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-success btn-pill" th:href="@{'/don/form/' + ${action.id}}">
+                        Faire un don
+                    </a>
+                    <a class="btn btn-outline-success btn-pill" th:href="@{'/participation/form/' + ${action.id}}">
+                        Participer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </section>
+</div>
+
+</body>
+</html>
