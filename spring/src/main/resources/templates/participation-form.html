@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout('Participation', ~{::section})}">
 <body>
-
-<div th:replace="~{layout :: content(~{::section})}">
     <section>
 
     <div class="p-4 border rounded-xl bg-light">
