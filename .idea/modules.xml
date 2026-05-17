@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/projet_spring.iml" filepath="$PROJECT_DIR$/.idea/projet_spring.iml" />
-      <module fileurl="file://$PROJECT_DIR$/wissal/wissal.iml" filepath="$PROJECT_DIR$/wissal/wissal.iml" />
     </modules>
   </component>
 </project>

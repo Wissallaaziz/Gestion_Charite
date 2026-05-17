@@ -36,8 +36,10 @@ public class OrganisationServiceImpl implements OrganisationService {
 
         org.setNom(organisation.getNom());
         org.setAdresse(organisation.getAdresse());
+        org.setNumeroFiscal(organisation.getNumeroFiscal());
         org.setContact(organisation.getContact());
         org.setDescription(organisation.getDescription());
+        org.setLogo(organisation.getLogo());
 
         return organisationRepository.save(org);
     }
@@ -46,6 +48,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     public void deleteOrganisation(Long id) {
         organisationRepository.deleteById(id);
     }
+
     @Override
     public Organisation validerOrganisation(Long id) {
         Organisation org = getOrganisationById(id);

@@ -21,7 +21,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    // 🔐 LOGIN ADMIN
+    // LOGIN ADMIN
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password) {
@@ -35,13 +35,13 @@ public class AdminController {
         return "Email ou mot de passe incorrect";
     }
 
-    // 📋 voir les organisations non validées
+    // voir les organisations non validées
     @GetMapping("/organisations/pending")
     public List<Organisation> getPending() {
         return organisationService.getNonValidees();
     }
 
-    // ✔ valider une organisation
+    // valider une organisation
     @PutMapping("/organisations/{id}/valider")
     public Organisation valider(@PathVariable Long id) {
         return organisationService.validerOrganisation(id);

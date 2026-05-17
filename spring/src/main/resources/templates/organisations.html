@@ -1,35 +1,117 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout('Gestion des organisations', ~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - CharityConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
 
-<div th:replace="~{layout :: content(~{::section})}">
     <section>
 
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <h2 class="mb-0">Organisations partenaires</h2>
-        <a class="btn btn-outline-success btn-pill" href="/dashboard">Espace admin</a>
-    </div>
-
-    <div class="row">
-
-        <div class="col-md-4 mb-3" th:each="org : ${organisations}">
-            <div class="card border-0 shadow-sm h-100 hover-lift">
-
-                <div class="card-body">
-                    <h5 th:text="${org.nom}"></h5>
-                    <p class="text-secondary" th:text="${org.description}"></p>
-
-                    <p>
-                        Status :
-                        <span th:if="${org.valide}" class="badge text-bg-success">Validée</span>
-                        <span th:if="${!org.valide}" class="badge text-bg-warning">En attente</span>
-                    </p>
-                </div>
-
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="mb-0">Gestion des organisations</h2>
+                <p class="text-secondary mb-0">Créez, modifiez et supprimez les organisations partenaires.</p>
             </div>
+            <a class="btn btn-outline-secondary btn-pill" href="/dashboard">Retour dashboard</a>
         </div>
 
-    </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4 mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <h5 th:text="${formTitle}">Créer une organisation</h5>
+                            <p class="text-secondary mb-0">Utilisez ce formulaire pour ajouter ou modifier une organisation.</p>
+                        </div>
+                        <span th:if="${organisation.id != null}" class="badge bg-info text-dark">Modification</span>
+                    </div>
+
+                    <form th:action="@{${formAction}}" th:object="${organisation}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Nom</label>
+                            <input type="text" th:field="*{nom}" class="form-control rounded-xl" placeholder="Nom de l'organisation" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" th:field="*{adresse}" class="form-control rounded-xl" placeholder="Adresse" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Numéro fiscal</label>
+                            <input type="text" th:field="*{numeroFiscal}" class="form-control rounded-xl" placeholder="Numéro fiscal" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact</label>
+                            <input type="text" th:field="*{contact}" class="form-control rounded-xl" placeholder="Email ou téléphone" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea th:field="*{description}" class="form-control rounded-xl" rows="4" placeholder="Description de l'organisation"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Logo URL</label>
+                            <input type="text" th:field="*{logo}" class="form-control rounded-xl" placeholder="https://..." />
+                        </div>
+                        <button class="btn btn-success btn-pill w-100" type="submit" th:text="${submitLabel}">Créer</button>
+                        <a th:if="${organisation.id != null}" class="btn btn-outline-secondary btn-pill w-100 mt-2" href="/organisations">Annuler</a>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="mb-0">Liste des organisations</h5>
+                            <p class="text-secondary mb-0">Toutes les organisations enregistrées sur la plateforme.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Créée le</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="org : ${organisations}">
+                                    <td th:text="${org.id}">1</td>
+                                    <td>
+                                        <div class="fw-semibold" th:text="${org.nom}">Organisation</div>
+                                        <div class="text-secondary small" th:text="${org.adresse}">Adresse</div>
+                                    </td>
+                                    <td th:text="${org.contact}">contact@example.com</td>
+                                    <td>
+                                        <span th:if="${org.valide}" class="badge bg-success">Validée</span>
+                                        <span th:if="${!org.valide}" class="badge bg-warning text-dark">En attente</span>
+                                    </td>
+                                    <td th:text="${org.dateCreation != null ? #dates.format(org.dateCreation, 'dd/MM/yyyy') : '---'}">01/01/2024</td>
+                                    <td class="text-nowrap">
+                                        <a th:href="@{/organisations(editId=${org.id})}" class="btn btn-sm btn-outline-primary me-1">Modifier</a>
+                                        <a th:href="@{/organisations/delete/{id}(id=${org.id})}" class="btn btn-sm btn-outline-danger me-1" onclick="return confirm('Supprimer cette organisation ?');">Supprimer</a>
+                                        <a th:if="${!org.valide}" th:href="@{/organisations/approve/{id}(id=${org.id})}" class="btn btn-sm btn-outline-success">Valider</a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${organisations.empty}">
+                                    <td colspan="6" class="text-center text-secondary py-4">Aucune organisation trouvée.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </section>
 </div>
