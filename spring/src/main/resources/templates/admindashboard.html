@@ -1,61 +1,207 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - CharityConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hand-holding-heart me-2"></i>CharityConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/actions">Campagnes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/categories">Catégories</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/dashboard">Dashboard</a></li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <span class="nav-link" th:text="'Admin: ' + ${session.currentUser.email}"></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary ms-2" href="/logout">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<div th:replace="~{layout :: content(~{::section})}">
-    <section>
+    <div class="container py-5" style="padding-top: 120px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold"><i class="fas fa-chart-line me-2"></i>Dashboard Admin</h1>
+            <span class="badge bg-success">Administrateur</span>
+        </div>
 
-    <h2>📊 Dashboard Analytics</h2>
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">
+                        <i class="fas fa-coins me-2"></i>
+                        <span th:text="${totalDons != null ? totalDons : 0}">0</span> DH
+                    </div>
+                    <div class="stat-label">Total des dons</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">
+                        <i class="fas fa-heart me-2"></i>
+                        <span th:text="${totalActions != null ? totalActions : 0}">0</span>
+                    </div>
+                    <div class="stat-label">Campagnes actives</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">
+                        <i class="fas fa-building me-2"></i>
+                        <span th:text="${totalOrganisationsValides != null ? totalOrganisationsValides : 0}">0</span>
+                    </div>
+                    <div class="stat-label">Organisations validées</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">
+                        <i class="fas fa-users me-2"></i>
+                        <span th:text="${totalParticipations != null ? totalParticipations : 0}">0</span>
+                    </div>
+                    <div class="stat-label">Participations</div>
+                </div>
+            </div>
+        </div>
 
-    <!-- CARDS -->
-    <div class="row">
-        <div class="col">💰 <span th:text="${totalDons}"></span></div>
-        <div class="col">❤️ <span th:text="${totalActions}"></span></div>
-        <div class="col">🏢 <span th:text="${totalOrganisationsValides}"></span></div>
-        <div class="col">🤝 <span th:text="${totalParticipations}"></span></div>
+        <!-- Chart Section -->
+        <div class="dashboard-card mb-4">
+            <h4 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Statistiques</h4>
+            <canvas id="myChart" height="100"></canvas>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dashboard-card">
+            <h4 class="mb-4"><i class="fas fa-tasks me-2"></i>Actions rapides</h4>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <a href="/organisations" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-building me-2"></i>Gérer les organisations
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/actions" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-list me-2"></i>Voir toutes les campagnes
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/api/admin/organisations/pending" class="btn btn-outline-warning w-100">
+                        <i class="fas fa-clock me-2"></i>Organisations en attente
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/utilisateurs" class="btn btn-outline-info w-100">
+                        <i class="fas fa-users me-2"></i>Gérer les utilisateurs
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <hr/>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">CharityConnect</h5>
+                    <p>Connecter les cœurs, transformer des vies. Ensemble, nous pouvons faire la différence.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Liens</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="footer-link" href="/">Accueil</a></li>
+                        <li><a class="footer-link" href="/actions">Campagnes</a></li>
+                        <li><a class="footer-link" href="/categories">Catégories</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Admin</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="footer-link" href="/dashboard">Dashboard</a></li>
+                        <li><a class="footer-link" href="/organisations">Organisations</a></li>
+                        <li><a class="footer-link" href="/utilisateurs">Utilisateurs</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">Contact</h5>
+                    <p><i class="fas fa-envelope me-2"></i>contact@charityconnect.org</p>
+                    <p><i class="fas fa-phone me-2"></i>+33 1 23 45 67 89</p>
+                    <div class="mt-3">
+                        <a href="#" class="footer-link me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 CharityConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 
-    <!-- GRAPH -->
-    <canvas id="myChart" width="400" height="200"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        let labels = /*[[${labels}]]*/ [];
+        let values = /*[[${values}]]*/ [];
 
-    </section>
-</div>
+        const ctx = document.getElementById('myChart');
 
-<!-- SCRIPT CHART -->
-<script th:inline="javascript">
-
-    let labels = /*[[${labels}]]*/ [];
-    let values = /*[[${values}]]*/ [];
-
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Statistiques',
-                data: values,
-                backgroundColor: [
-                    'green',
-                    'blue',
-                    'orange',
-                    'red'
-                ]
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
-
-</script>
-
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Statistiques',
+                    data: values,
+                    backgroundColor: [
+                        'rgba(46, 204, 113, 0.8)',
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(241, 196, 15, 0.8)',
+                        'rgba(231, 76, 60, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(231, 76, 60, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

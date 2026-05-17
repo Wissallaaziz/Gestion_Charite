@@ -1,95 +1,172 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campagnes - CharityConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
 <body>
-
-<div th:replace="~{layout :: content(~{::section})}">
-    <section>
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <h2 class="mb-0">Campagnes de charité</h2>
-        <a class="btn btn-success btn-pill"
-           href="/actions/form"
-           th:if="${session.currentUser != null and session.currentUser.role == 'ORGANISATION'}">
-            Créer une campagne
-        </a>
-    </div>
-
-    <form method="get" action="/actions" class="row g-2 mb-4">
-        <div class="col-md-4">
-            <select class="form-select rounded-xl" name="category">
-                <option value="">Toutes les catégories</option>
-                <option value="Santé" th:selected="${selectedCategory == 'Santé'}">Santé</option>
-                <option value="Éducation" th:selected="${selectedCategory == 'Éducation'}">Éducation</option>
-                <option value="Nourriture" th:selected="${selectedCategory == 'Nourriture'}">Nourriture</option>
-                <option value="Orphelins" th:selected="${selectedCategory == 'Orphelins'}">Orphelins</option>
-                <option value="Ramadan / Zakat" th:selected="${selectedCategory == 'Ramadan / Zakat'}">Ramadan / Zakat</option>
-            </select>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hand-holding-heart me-2"></i>CharityConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/actions">Campagnes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/categories">Catégories</a></li>
+                    <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == T(com.example.spring.entities.Role).ADMIN}">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == T(com.example.spring.entities.Role).ORGANISATION}">
+                        <a class="nav-link" href="/actions/form">Créer Campagne</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" th:if="${session.currentUser == null}">
+                        <a class="nav-link" href="/login">Connexion</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser == null}">
+                        <a class="btn btn-primary ms-2" href="/register">S'inscrire</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <span class="nav-link" th:text="'Bonjour, ' + ${session.currentUser.email}"></span>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <a class="btn btn-outline-primary ms-2" href="/logout">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-auto">
-            <button class="btn btn-outline-success btn-pill">Filtrer</button>
+    </nav>
+
+    <div class="container py-5" style="padding-top: 120px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h1 class="fw-bold">Campagnes de charité</h1>
+            <a class="btn btn-primary"
+               href="/actions/form"
+               th:if="${session.currentUser != null and session.currentUser.role == T(com.example.spring.entities.Role).ORGANISATION}">
+                <i class="fas fa-plus me-2"></i>Créer une campagne
+            </a>
         </div>
-        <div class="col-auto" th:if="${selectedCategory != null and selectedCategory != ''}">
-            <a class="btn btn-light btn-pill border" href="/actions">Réinitialiser</a>
-        </div>
-    </form>
 
-    <div class="row g-4">
+        <form method="get" action="/actions" class="row g-3 mb-5">
+            <div class="col-md-4">
+                <select class="form-select" name="category">
+                    <option value="">Toutes les catégories</option>
+                    <option value="Santé" th:selected="${selectedCategory == 'Santé'}">Santé</option>
+                    <option value="Éducation" th:selected="${selectedCategory == 'Éducation'}">Éducation</option>
+                    <option value="Nourriture" th:selected="${selectedCategory == 'Nourriture'}">Nourriture</option>
+                    <option value="Orphelins" th:selected="${selectedCategory == 'Orphelins'}">Orphelins</option>
+                    <option value="Ramadan / Zakat" th:selected="${selectedCategory == 'Ramadan / Zakat'}">Ramadan / Zakat</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter me-2"></i>Filtrer
+                </button>
+            </div>
+            <div class="col-auto" th:if="${selectedCategory != null and selectedCategory != ''}">
+                <a class="btn btn-outline-secondary" href="/actions">
+                    <i class="fas fa-times me-2"></i>Réinitialiser
+                </a>
+            </div>
+        </form>
 
-        <div class="col-md-6 col-lg-4" th:each="a : ${actions}">
-            <div class="card border-0 shadow-sm h-100 hover-lift">
-                <img src="https://images.unsplash.com/photo-1593113598332-cd59a93f7f70?auto=format&fit=crop&w=900&q=80"
-                     class="card-img-top" alt="Campagne">
-                <div class="card-body">
-
-                    <h5 class="card-title" th:text="${a.titre}"></h5>
-
-                    <p class="card-text text-secondary" th:text="${a.description}"></p>
-
-                    <p class="small mb-1" th:if="${a.organisation != null}">
-                        <i class="fa-regular fa-building me-1"></i>
-                        <span th:text="${a.organisation.nom}"></span>
-                    </p>
-
-                    <p class="small mb-1">
-                        <i class="fa-solid fa-bullseye me-1 text-success"></i>
-                        Objectif:
-                        <b th:text="${#numbers.formatDecimal(a.objectifMontant, 1, 0)}"></b> DH
-                    </p>
-                    <p class="small">
-                        <i class="fa-solid fa-hand-holding-heart me-1 text-success"></i>
-                        Collecté:
-                        <b th:text="${#numbers.formatDecimal(a.montantCollecte, 1, 0)}"></b> DH
-                    </p>
-                    <p class="small text-primary fw-semibold mb-2" th:if="${isDonorUser}">
-                        <i class="fa-solid fa-wallet me-1"></i>
-                        Votre don:
-                        <span th:text="${#numbers.formatDecimal(donationByAction[a.id] != null ? donationByAction[a.id] : 0, 1, 0)}"></span> DH
-                    </p>
-
-                    <div class="progress mb-3" role="progressbar">
-                        <div class="progress-bar bg-success"
-                             th:style="'width:' + ${a.objectifMontant > 0 ? (a.montantCollecte * 100 / a.objectifMontant) : 0} + '%'"></div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4" th:each="action : ${actions}">
+                <div class="campaign-card fade-in">
+                    <div class="campaign-image">
+                        <i class="fas fa-hand-holding-heart"></i>
                     </div>
+                    <div class="campaign-body">
+                        <h5 class="campaign-title" th:text="${action.titre}">Titre de la campagne</h5>
+                        <p class="campaign-organisation" th:if="${action.organisation != null}" th:text="${action.organisation.nom}">Organisation</p>
+                        <p class="text-muted small" th:text="${#strings.abbreviate(action.description, 100)}">Description</p>
+                        
+                        <div class="progress">
+                            <div class="progress-bar" th:style="'width: ' + ${action.objectifMontant > 0 ? (action.montantCollecte * 100 / action.objectifMontant) : 0} + '%'"></div>
+                        </div>
+                        
+                        <div class="campaign-stats">
+                            <span class="stat-amount" th:text="${#numbers.formatDecimal(action.montantCollecte, 1, 0)} + ' DH'">0 DH</span>
+                            <span class="text-muted">sur</span>
+                            <span th:text="${#numbers.formatDecimal(action.objectifMontant, 1, 0)} + ' DH'">0 DH</span>
+                        </div>
 
-                    <div class="d-flex gap-2">
-                        <a class="btn btn-success btn-sm btn-pill" th:href="@{'/don/form/' + ${a.id}}">
-                            Donner maintenant
-                        </a>
-                        <a class="btn btn-outline-success btn-sm btn-pill" th:href="@{'/actions/' + ${a.id}}">
-                            Voir plus
-                        </a>
+                        <p class="text-success small mb-2" th:if="${isDonorUser and donationByAction[action.id] != null}">
+                            <i class="fas fa-wallet me-1"></i>
+                            Votre don: <span th:text="${#numbers.formatDecimal(donationByAction[action.id], 1, 0)}"></span> DH
+                        </p>
+
+                        <div class="d-flex gap-2">
+                            <a th:href="@{'/don/form/' + ${action.id}}" class="btn btn-primary flex-grow-1">
+                                <i class="fas fa-heart me-2"></i>Donner
+                            </a>
+                            <a th:href="@{'/actions/' + ${action.id}}" class="btn btn-outline-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="col-12" th:if="${#lists.isEmpty(actions)}">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i>Aucune campagne ne correspond à ce filtre.
                 </div>
             </div>
         </div>
-        <div class="col-12" th:if="${#lists.isEmpty(actions)}">
-            <div class="alert alert-light border">Aucune campagne ne correspond à ce filtre.</div>
-        </div>
-
     </div>
 
-    </section>
-</div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">CharityConnect</h5>
+                    <p>Connecter les cœurs, transformer des vies. Ensemble, nous pouvons faire la différence.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Liens</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="footer-link" href="/">Accueil</a></li>
+                        <li><a class="footer-link" href="/actions">Campagnes</a></li>
+                        <li><a class="footer-link" href="/categories">Catégories</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Compte</h5>
+                    <ul class="list-unstyled">
+                        <li th:if="${session.currentUser == null}"><a class="footer-link" href="/login">Connexion</a></li>
+                        <li th:if="${session.currentUser == null}"><a class="footer-link" href="/register">Inscription</a></li>
+                        <li th:if="${session.currentUser != null}"><a class="footer-link" href="/dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">Contact</h5>
+                    <p><i class="fas fa-envelope me-2"></i>contact@charityconnect.org</p>
+                    <p><i class="fas fa-phone me-2"></i>+33 1 23 45 67 89</p>
+                    <div class="mt-3">
+                        <a href="#" class="footer-link me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 CharityConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

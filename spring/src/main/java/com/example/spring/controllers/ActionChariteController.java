@@ -38,11 +38,11 @@ public class ActionChariteController {
         model.addAttribute("selectedCategory", category);
 
         Map<Long, Double> donationByAction = Map.of();
-        if (currentUser != null && "USER".equalsIgnoreCase(currentUser.getRole())) {
+        if (currentUser != null && "USER".equalsIgnoreCase(String.valueOf(currentUser.getRole()))) {
             donationByAction = donService.sumDonationsByActionForUser(currentUser.getId());
         }
         model.addAttribute("donationByAction", donationByAction);
-        model.addAttribute("isDonorUser", currentUser != null && "USER".equalsIgnoreCase(currentUser.getRole()));
+        model.addAttribute("isDonorUser", currentUser != null && "USER".equalsIgnoreCase(String.valueOf(currentUser.getRole())));
         return "actions";
     }
 
@@ -58,7 +58,7 @@ public class ActionChariteController {
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if (!"ORGANISATION".equalsIgnoreCase(currentUser.getRole())) {
+        if (!"ORGANISATION".equalsIgnoreCase(String.valueOf(currentUser.getRole()))) {
             return "redirect:/actions";
         }
         model.addAttribute("action", new ActionCharite());
@@ -71,7 +71,7 @@ public class ActionChariteController {
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if (!"ORGANISATION".equalsIgnoreCase(currentUser.getRole())) {
+        if (!"ORGANISATION".equalsIgnoreCase(String.valueOf(currentUser.getRole()))) {
             return "redirect:/actions";
         }
         actionService.save(action);

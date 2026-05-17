@@ -1,8 +1,9 @@
 package com.example.spring.controllers;
 
+import com.example.spring.entities.Admin;
 import com.example.spring.entities.Organisation;
+import com.example.spring.services.AdminService;
 import com.example.spring.services.OrganisationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,8 +12,28 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    @Autowired
-    private OrganisationService organisationService;
+    private final OrganisationService organisationService;
+    private final AdminService adminService;
+
+    public AdminController(OrganisationService organisationService,
+                           AdminService adminService) {
+        this.organisationService = organisationService;
+        this.adminService = adminService;
+    }
+
+    // 🔐 LOGIN ADMIN
+    @PostMapping("/login")
+    public String login(@RequestParam String email,
+                        @RequestParam String password) {
+
+        Admin admin = adminService.login(email, password);
+
+        if (admin != null) {
+            return "Login OK";
+        }
+
+        return "Email ou mot de passe incorrect";
+    }
 
     // 📋 voir les organisations non validées
     @GetMapping("/organisations/pending")

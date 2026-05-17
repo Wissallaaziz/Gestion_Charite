@@ -1,48 +1,198 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catégories - CharityConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
 <body>
-
-<div th:replace="~{layout :: content(~{::section})}">
-    <section>
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-            <h2 class="mb-0">Catégories humanitaires</h2>
-            <a href="/actions" class="btn btn-outline-success btn-pill">Explorer les campagnes</a>
-        </div>
-
-        <div class="row g-3 text-center">
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-4 rounded-xl border bg-light hover-lift">
-                    <i class="fa-solid fa-heart-pulse text-success fa-2x mb-3"></i>
-                    <h6>Santé</h6>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-4 rounded-xl border bg-light hover-lift">
-                    <i class="fa-solid fa-graduation-cap text-success fa-2x mb-3"></i>
-                    <h6>Éducation</h6>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-4 rounded-xl border bg-light hover-lift">
-                    <i class="fa-solid fa-utensils text-success fa-2x mb-3"></i>
-                    <h6>Nourriture</h6>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-4 rounded-xl border bg-light hover-lift">
-                    <i class="fa-solid fa-children text-success fa-2x mb-3"></i>
-                    <h6>Orphelins</h6>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-4 rounded-xl border bg-light hover-lift">
-                    <i class="fa-solid fa-moon text-success fa-2x mb-3"></i>
-                    <h6>Ramadan / Zakat</h6>
-                </div>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hand-holding-heart me-2"></i>CharityConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/actions">Campagnes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/categories">Catégories</a></li>
+                    <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == T(com.example.spring.entities.Role).ADMIN}">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == T(com.example.spring.entities.Role).ORGANISATION}">
+                        <a class="nav-link" href="/actions/form">Créer Campagne</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" th:if="${session.currentUser == null}">
+                        <a class="nav-link" href="/login">Connexion</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser == null}">
+                        <a class="btn btn-primary ms-2" href="/register">S'inscrire</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <span class="nav-link" th:text="'Bonjour, ' + ${session.currentUser.email}"></span>
+                    </li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <a class="btn btn-outline-primary ms-2" href="/logout">Déconnexion</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </section>
-</div>
+    </nav>
 
+    <div class="container py-5" style="padding-top: 120px;">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold mb-3">Catégories humanitaires</h1>
+            <p class="text-muted">Explorez nos différentes catégories de campagnes et trouvez celle qui vous touche le plus</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Santé" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-heart-pulse"></i>
+                        </div>
+                        <div class="category-name">Santé</div>
+                        <small class="text-muted">Soins médicaux et hôpitaux</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Éducation" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="category-name">Éducation</div>
+                        <small class="text-muted">Écoles et formation</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Nourriture" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="category-name">Nourriture</div>
+                        <small class="text-muted">Aide alimentaire</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Orphelins" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <div class="category-name">Orphelins</div>
+                        <small class="text-muted">Soutien aux orphelins</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Ramadan / Zakat" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="category-name">Ramadan</div>
+                        <small class="text-muted">Campagnes de Ramadan</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Ramadan / Zakat" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="category-name">Zakat</div>
+                        <small class="text-muted">Distribution de Zakat</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Eau" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="category-name">Eau</div>
+                        <small class="text-muted">Accès à l'eau potable</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/actions?category=Logement" class="text-decoration-none">
+                    <div class="category-card fade-in">
+                        <div class="category-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="category-name">Logement</div>
+                        <small class="text-muted">Habitat et refuge</small>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/actions" class="btn btn-primary btn-lg">
+                <i class="fas fa-search me-2"></i>Voir toutes les campagnes
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">CharityConnect</h5>
+                    <p>Connecter les cœurs, transformer des vies. Ensemble, nous pouvons faire la différence.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Liens</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="footer-link" href="/">Accueil</a></li>
+                        <li><a class="footer-link" href="/actions">Campagnes</a></li>
+                        <li><a class="footer-link" href="/categories">Catégories</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="footer-title">Compte</h5>
+                    <ul class="list-unstyled">
+                        <li th:if="${session.currentUser == null}"><a class="footer-link" href="/login">Connexion</a></li>
+                        <li th:if="${session.currentUser == null}"><a class="footer-link" href="/register">Inscription</a></li>
+                        <li th:if="${session.currentUser != null}"><a class="footer-link" href="/dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">Contact</h5>
+                    <p><i class="fas fa-envelope me-2"></i>contact@charityconnect.org</p>
+                    <p><i class="fas fa-phone me-2"></i>+33 1 23 45 67 89</p>
+                    <div class="mt-3">
+                        <a href="#" class="footer-link me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 CharityConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

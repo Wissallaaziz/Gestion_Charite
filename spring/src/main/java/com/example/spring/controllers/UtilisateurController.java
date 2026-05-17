@@ -20,15 +20,13 @@ public class UtilisateurController {
     // CREATE
     @PostMapping
     public Utilisateur createUtilisateur(@RequestBody Utilisateur utilisateur) {
-        String role = utilisateur.getRole();
-        if (role == null || role.isBlank()) {
-            utilisateur.setRole("USER");
+        com.example.spring.entities.Role role = utilisateur.getRole();
+        if (role == null) {
+            utilisateur.setRole(com.example.spring.entities.Role.DONATEUR);
         } else {
-            role = role.trim().toUpperCase(Locale.ROOT);
-            if (!role.equals("USER") && !role.equals("ORGANISATION")) {
+            if (role != com.example.spring.entities.Role.DONATEUR && role != com.example.spring.entities.Role.ORGANISATION) {
                 throw new RuntimeException("Role non autorise pour la creation de compte");
             }
-            utilisateur.setRole(role);
         }
         return utilisateurService.saveUtilisateur(utilisateur);
     }

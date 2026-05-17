@@ -22,7 +22,7 @@ public class DashboardController {
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if (!"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
+        if (!"ADMIN".equalsIgnoreCase(String.valueOf(currentUser.getRole()))) {
             return "redirect:/";
         }
 
@@ -53,7 +53,7 @@ public class DashboardController {
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if (!"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
+        if (!"ADMIN".equalsIgnoreCase(String.valueOf(currentUser.getRole()))) {
             return "redirect:/";
         }
         return "global-campaign-directory";

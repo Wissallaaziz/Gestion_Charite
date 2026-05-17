@@ -55,8 +55,8 @@ public class AuthPageController {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNom(nom);
         utilisateur.setEmail(email);
-        utilisateur.setMotDePasse(motDePasse);
-        utilisateur.setRole(role);
+        utilisateur.setPassword(motDePasse);
+        utilisateur.setRole(com.example.spring.entities.Role.valueOf(role.toUpperCase()));
 
         try {
             utilisateurService.register(utilisateur);

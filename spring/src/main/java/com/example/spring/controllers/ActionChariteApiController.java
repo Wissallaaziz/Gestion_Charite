@@ -35,7 +35,7 @@ public class ActionChariteApiController {
         if (currentUser == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Connexion requise");
         }
-        if (!"ORGANISATION".equalsIgnoreCase(currentUser.getRole())) {
+        if (currentUser.getRole() != com.example.spring.entities.Role.ORGANISATION) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seule une organisation peut creer une campagne");
         }
         return actionService.save(action);

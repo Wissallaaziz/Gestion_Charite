@@ -36,9 +36,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public Utilisateur updateUtilisateur(Long id, Utilisateur utilisateur) {
         Utilisateur u = getUtilisateurById(id);
 
-        u.setNom(utilisateur.getNom());
         u.setEmail(utilisateur.getEmail());
-        u.setMotDePasse(utilisateur.getMotDePasse());
+        u.setPassword(utilisateur.getPassword());
         u.setRole(utilisateur.getRole());
 
         return utilisateurRepository.save(u);
@@ -60,7 +59,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email incorrect"));
 
-        if (!utilisateur.getMotDePasse().equals(motDePasse)) {
+        if (!utilisateur.getPassword().equals(motDePasse)) {
             throw new RuntimeException("Mot de passe incorrect");
         }
 
@@ -74,14 +73,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             throw new RuntimeException("Email déjà utilisé");
         }
 
-        // Only USER and ORGANISATION can self-register
-        String role = utilisateur.getRole();
-        if (role == null || role.isBlank()) {
-            role = "USER";
+        // Only DONATEUR and ORGANISATION can self-register
+        com.example.spring.entities.Role role = utilisateur.getRole();
+        if (role == null) {
+            role = com.example.spring.entities.Role.DONATEUR;
         }
-        role = role.trim().toUpperCase(Locale.ROOT);
 
-        if (!role.equals("USER") && !role.equals("ORGANISATION")) {
+        if (role != com.example.spring.entities.Role.DONATEUR && role != com.example.spring.entities.Role.ORGANISATION) {
             throw new RuntimeException("Role non autorise pour l'inscription");
         }
 
